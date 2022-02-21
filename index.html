@@ -1,0 +1,416 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Spark | Dev Talk</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/blood.css" id="theme">
+
+		<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<style>
+			.container{
+				display: flex;
+			}
+			.col{
+				flex: 1;
+			}
+			.med{
+				font-size: 0.85em !important;
+			}
+			.small{
+				font-size: 0.70em !important;
+			}
+		</style>
+		<div class="reveal">
+			<div class="slides">
+
+				<section id="slide1">
+					<a href="https://spark.apache.org/">
+						<img src="img/spark_logo.png" alt="spark logo" style="height: 250px; margin: 0 auto 4rem auto; background: transparent;" class="demo-logo">
+					</a>
+					<p>#dev-talks-guild</p>
+					<p><small>March 4, 2021</small></br>
+					<small>Surya Dutta</small></p>
+					
+				</section>
+
+				<section id="outline">
+					<div class="container">
+					
+						<div class="col">
+							<h4>What we <br/> will cover</h4>
+							<br/>
+							<ul>
+								<li class="fragment fade-in med">Intro to Spark and Distributed Computing</li>
+								<br/>
+								<li class="fragment fade-in med">Evolution of Spark APIs</li>
+								<br/>
+								<li class="fragment fade-in med">Overview of Basic Operations</li>
+								<br/>
+								<li class="fragment fade-in med">Code Demo</li>	
+							</ul>				
+						</div>
+
+						<div class="col">
+							<h4 class="fragment fade-in">What we <br/> won't cover</h4>
+							<br/>
+							<ul>
+								<li class="fragment fade-in med">In-depth details of how distributed jobs work under-the-hood</li>
+								<br/>
+								<li class="fragment fade-in med">How to write low-level jobs (MapReduce, RDD)</li>
+							</ul>	
+						</div>
+						
+					</div>
+				</section>
+
+				<section data-visibility="hidden">
+					<section>
+						<h2>What is Big Data?</h2>
+						<p>type your answers in the chat</p>
+					</section>
+					<section 
+						data-background-color="white" 
+						data-background-image="img/4-Vs-of-big-data.jpg" 
+						data-background-size="contain">
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>What is Spark?</h3>
+					</section>
+					<section>
+						<p>Spark is a <b>platform</b> for <b>distributed data analysis</b></p>
+						<br/>
+						<ul>
+							<li class="fragment small">Handles infrastructure to <b>distribute computations</b> across many computers</li>
+							<br/>
+							<li class="fragment small"><b>Easy to use APIs</b> with built-in optimizations</li>
+							<br/>
+							<li class="fragment small"><b>Connectors</b> allow easy integration with databases and pipeline</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>Ok, but why Spark?</h3>
+						<p>An Intro to Distributed Computing</p>
+					</section>
+					<section>
+						<h4>Why do we need distributed computing?</h4>
+						<br/>
+						<p class="fragment">One computer may not be able to hold the <br/>entire dataset in memory/storage</p>
+						<br/>
+						<p class="fragment">Not all computations are equal: </p>
+						<ul>
+							<li class="fragment">Easy: Add <code data-trim data-noescape>([x] => [x+1])</code></li>
+							<li class="fragment">Hard: Sort <code data-trim data-noescape>([x] => sort([x]))</code></li>
+						</ul>
+					</section>
+					<section>
+						<h4>Why do we need distributed computing?</h4>
+						<br/>
+						<p>Costs: Vertical Scaling vs Horizontal Scaling</p>
+						<div class="r-stack">
+							<img class="fragment fade-in-then-out" data-fragment-index="0" src="https://www.webairy.com/wp-content/uploads/2019/07/hvsv.jpg" height="300">
+							<img class="fragment fade-in" src="https://res.cloudinary.com/practicaldev/image/fetch/s--xyvGh-Iz--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://cdn-images-1.medium.com/max/1600/1%2AQ04Whj8FX5qNt7rjAHy95w.png" height="300">
+						</div>
+					</section>
+					<section>
+						
+						
+						<div class="container">
+						
+							<div class="col">
+								<h4>What we need to distribute compute:</h4>
+								<br/>
+								<p class="fragment fade-in">Parallelism</p>
+								<p class="fragment fade-in">Fault Tolerance</p>
+								<p class="fragment fade-in">Compatibility</p>						
+							</div>
+
+							<div class="col">
+								<h4 class="fragment fade-in">The nice thing<br/>about Spark?</h4>
+								<br/>
+								<p class="fragment fade-in"> You get all of this,<br/>abstracted away,</br>for <b>free</b>!</p>
+							</div>
+							
+						</div>
+					</section>	
+				</section>
+				
+				<section id="spark-ecosystem">
+					<section>
+						<h4>Evolution of the</h4>
+						<h2>Spark Ecosystem</h2>
+					</section>
+					<section>
+						<h3>Ways to use Spark:</h3>
+						<br/>
+						<ul class="fragment">
+							<li>Python</li>
+							<li>Java</li>
+							<li>R</li>
+							<li>Scala</li>
+							<li>SQL*</li>
+						</ul>
+					</section>
+					<section>
+						<h4>Pre-Spark: Hadoop MapReduce</h4>
+						<br/>
+						<ul>
+							<li class="fragment small">Clusters = many worker nodes + YARN scheduling manager on main node</li>
+							<br/>
+							<li class="fragment small">Architecture based on Hadoop Distributed File System (HDFS)</li>
+							<br/>
+							<li class="fragment small">Each worker node reads in HDFS files, does some compute, and outputs results into another set of HDFS files</li>			
+							<br/>
+							<li class="fragment small">Requires low-level understanding of how to write map and reduce jobs</li>				
+						</ul>
+					</section>
+					<section>
+						<h4>Pre-Spark: Hadoop MapReduce</h4>
+						<br/>
+						<img src="https://www.tutorialspoint.com/apache_spark/images/iterative_operations_on_mapreduce.jpg" height="400">
+					</section>
+					<section>
+						<h4>Spark 1.0:</h4>
+						<h4>Resilient Distributed Datasets (RDD)</h4>
+						</br>
+						<ul>
+							<li class="fragment small">Data is stored in <b>memory</b>, only sent to disk when none left</li>
+							<br/>
+							<li class="fragment small">Directed Acyclic Graph (DAG) used to map tasks (lazy execution), <br/> can optimize internally before running full task</li>
+							<br/>
+							<li class="fragment small">100 times faster than Hadoop*</li>
+							<br/>
+							<li class="fragment small">Still fairly low level - manually writing map and reduce tasks</li>
+						</ul>
+					</section>
+					<section>
+						<h4>Spark 2.0:</h4>
+						<h3>DataFrames, Datasets, SQL</h3>
+						<br/>
+						<ul>
+							<li class="fragment small">Set of high-level Spark APIs that make using Spark a LOT easier!</li>
+							<br/>
+							<li class="fragment small">Spark DataFrames are pretty similar to pandas DataFrames - consist of rows of records, and columns of data points.</li>
+							<br/>
+							<li class="fragment small">Datasets = statically-typed DataFrames</li>
+							<br/>
+							<li class="fragment small">Highly optimized under-the-hood - uses much less memory</li>
+							<br/>
+							<li class="fragment small">Equalizes performance across languages</li>
+						</ul>
+					</section>
+					<section>
+						<h4>Spark 2.0:</h4>
+						<h3>DataFrames, Datasets, SQL</h3>
+						<br/>
+						<img src="https://scala-phase.org/talks/rdds-dataframes-datasets-2016-06-16/images/dataframe-performance.png" height="400">
+					</section>
+					<section>
+						<h4>Spark 3.0:</h4>
+						<h3>High Level Libraries</h3>
+						<br/>
+						<ul>
+							<li class="med">Spark Streaming</li>
+							<br/>
+							<li class="med">MLlib</li>
+							<br/>
+							<li class="med">GraphX</li>
+						</ul>
+					</section>
+					<section>
+						<h3>At the center of it all</h3>
+						<br/>
+						<img src="https://miro.medium.com/max/3008/1*-m8Pbf11D15sCuTWpqhD5Q.png" height="400">
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h3>(Py)Spark Bootcamp</h3>
+					</section>
+					<section>
+						<h4>Importing Data</h4>
+						<br/>
+						<div class="r-stack">
+							<div class="fragment fade-out" data-fragment-index="0" style="width:60%"> 
+								<p>Import JSON</p>
+								<pre class="python"><code data-trim data-noescape>
+									spark.read.format("json")
+									  .load("flights.json")
+								</code></pre>
+							</div>
+							<div class="fragment current-visible" data-fragment-index="0" style="width:60%">
+								<p>Import from CSV</p>
+								<pre class="python"><code data-trim data-noescape>
+									spark.read.format("csv")
+									  .option("mode","PERMISSIVE")
+									  .option("inferSchema", "true")
+									  .option("header", "true")
+									  .option("delimiter", "\t")
+									  .load("flights.csv")
+								</code></pre>
+							</div>
+							<div class="fragment">
+								<p>Other Data Formats</p>
+								<ul>
+									<li class="med">Text</li>
+									<li class="med">Parquet</li>
+									<li class="med">ODBC / JDBC</li>
+								</ul>
+							</div>
+						  </div>
+					</section>
+					<section>
+						<h4>Basic Operations</h4>
+						<br/>
+						<div class="r-stack">
+							<div class="fragment fade-out" data-fragment-index="0" style="width:80%"> 
+								<p>Selecting Data</p>
+								<pre class="python"><code data-trim data-noescape>
+									#simple selection
+									df.select("ORIGIN","DESTINATION")
+
+									#selection with rename
+									df.selectExpr("DESTINATION as destination_loc")
+
+									#selection with operation as new column
+									df.selectExpr(
+									  "*",
+									  "(ORIGIN = DESTINATION) as within_country"
+									)
+								</code></pre>
+							</div>
+							<div class="fragment current-visible" data-fragment-index="0" style="width:80%">
+								<p>Columns</p>
+								<pre class="python"><code data-trim data-noescape>
+									#add column
+									df.withColumn("within_country", 
+									              expr("(ORIGIN = DESTINATION)"))
+
+									#rename column
+									df.withRenamedColumn("DESTINATION","dest")
+
+									#drop column
+									df.drop("DESTINATION")
+								</code></pre>
+							</div>
+							<div class="fragment" style="width:80%">
+								<p>Filtering</p>
+								<pre class="python"><code data-trim data-noescape><script type="text/template">
+									#filter
+									df.filter(col("count")<2)
+
+									#where
+									df.where("count < 2")
+								</script>
+								</code></pre>
+							</div>
+						  </div>
+					</section>
+					<section>
+						<h4>Aggregations</h4>
+						<br/>
+						<div class="r-stack">
+							<div class="fragment fade-out" data-fragment-index="0" style="width:80%"> 
+								<p>Counting</p>
+								<pre class="python"><code data-trim data-noescape>
+									# count all rows
+									df.select(count(*))
+
+									# count distinct values of row
+									df.select(countDistinct("items"))
+
+									# approximate count distinct with max error
+									df.select(approx_count_distinct("items", 0.1))
+								</code></pre>
+							</div>
+							<div class="fragment current-visible" data-fragment-index="0" style="width:80%">
+								<p>Sum / Average</p>
+								<pre class="python"><code data-trim data-noescape>
+									df.select(
+								   # total quantity
+									  count("Quantity").alias("TotalTransactions"),
+									  # sum of all quantities
+									  sum("Quantity").alias("TotalPurchases"),
+									  # average purchase quantity
+									  avg("Quantity").alias("AvgPurchases")
+									)
+								</code></pre>
+							</div>
+							<div class="fragment" style="width:80%">
+								<p>Groupby</p>
+								<pre class="python"><code data-trim data-noescape>
+									# simple count
+									df.groupBy("Invoice").count()
+
+									# complex aggregations
+									df.groupBy("Invoice").agg(
+									  count("Quantity").alias("TotalTransactions"),
+									  sum("Quantity").alias("TotalPurchases"),
+									  avg("Quantity").alias("AvgPurchases")
+									)
+								</code></pre>
+							</div>
+						  </div>
+					</section>
+					<section>
+						<h4>User-Defined Functions</h4>
+						<br/>
+						<pre class="python"><code data-trim data-noescape>
+							# define function
+							def customFunc(x):
+							  return x ** 3  + 2
+
+							# register function with spark
+							customUDF = udf(customFunc)
+
+							# use it!
+							df.selectExpr("customUDF(num)")
+						</code></pre>
+						<p class="fragment small">
+							WARNING: user-defined functions are not optimized, <br/> will run much more slowly
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<a href="https://community.cloud.databricks.com/" target="_blank"><h3>Code Demo</h3></a>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				slideNumber: true,
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
+				pdfSeparateFragments: false
+			});
+		</script>
+	</body>
+</html>
